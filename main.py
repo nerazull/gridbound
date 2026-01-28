@@ -10,6 +10,7 @@ from config import (
 
 PLAYER_COLOR = (200, 200, 200)
 PLAYER_SIZE = 20
+PLAYER_SPEED = 200
 
 
 class Game:
@@ -29,9 +30,9 @@ class Game:
     def run(self) -> None:
         while self.running:
             self.handle_events()
-            self.update()
+            dt = self.clock.tick(FPS) / 1000
+            self.update(dt)
             self.render()
-            self.clock.tick(FPS)
 
         pygame.quit()
 
@@ -42,8 +43,22 @@ class Game:
 
         self.keys = pygame.key.get_pressed()
 
-    def update(self) -> None:
-        pass
+    def update(self, dt: float) -> None:
+        direction = pygame.Vector2(0, 0)
+
+        if self.keys[pygame.K_w]:
+            direction.y -= 1
+        if self.keys[pygame.K_s]:
+            direction.y += 1
+        if self.keys[pygame.K_a]:
+            direction.x -= 1
+        if self.keys[pygame.K_d]:
+            direction.x += 1
+
+        if direction.length_squared() > 0:
+            direction = direction.normalize()
+
+        self.player_pos += direction * PLAYER_SPEED * dt
 
     def render(self) -> None:
         self.screen.fill(BACKGROUND_COLOR)
