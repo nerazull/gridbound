@@ -5,6 +5,7 @@ from config import (
     WINDOW_HEIGHT,
     FPS,
     BACKGROUND_COLOR,
+    TILE_SIZE
 )
 
 
@@ -73,6 +74,12 @@ class Game:
                                                                 )
                         )
         
+        for x in range(0, WINDOW_WIDTH, TILE_SIZE):
+            pygame.draw.line(self.screen, (40, 40, 40), (x, 0), (x, WINDOW_HEIGHT))
+
+        for y in range(0, WINDOW_HEIGHT, TILE_SIZE):
+            pygame.draw.line(self.screen, (40, 40, 40), (0, y), (WINDOW_WIDTH, y))
+
         pygame.display.flip()
 
 
